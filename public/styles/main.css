@@ -1,0 +1,325 @@
+.hero {
+  height: 350px;
+  width: 100%;
+  background-image: url("../images/mac.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.label {
+  height: 200px;
+  width: 600px;
+  background-size:  contain;
+  background-repeat: no-repeat;
+  background-image: url("../images/rec.png");
+  margin-right: 80px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.test {
+  border: 3px solid limegreen;
+}
+
+.lower {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.container {
+  width: 45%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.mainRecBuffer {
+  margin-top: 5px;
+}
+
+.mainRec {
+  width: 100%;
+  height: 120px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.mainRecHead {
+  font-size: 25pt;
+  font-weight: bold;
+}
+
+.mainRecDesc {
+  font-size: 10pt;
+}
+
+.mainRecRating {
+
+}
+
+.recPageHero {
+  width: 100%;
+  height: 350px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.mainImg {
+  float: left;
+  height: 100%;
+  margin-right: 10px;
+  border-radius: 15px 0 0 15px;
+}
+
+.recPageHead {
+  font-size: 45pt;
+  font-weight: bold;
+}
+
+.recPageDesc {
+  font-size: 20pt;
+}
+
+.recPageRating {
+  font-size: 30pt;
+}
+
+.centerItems {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centerTop {
+  display: flex;
+  align-items: center;
+}
+
+.recipeSteps {
+  width: 90%;
+  height: 366px;
+  overflow: auto;
+}
+
+.reviewBox {
+  width: 90%;
+  height: 75%;
+  overflow: auto;
+  /*margin-bottom: 50px;*/
+}
+
+.step {
+  width: 99.5%;
+  height: 50px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10pt;
+}
+
+.review {
+  width: 99.5%;
+  height: 100px;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10pt;
+}
+
+.addReviewButton {
+  width: 150px;
+  height: 30px;
+  font-family: 'Source Sans Pro', sans-serif;
+  border: 3px solid brown;
+  color: brown;
+  border-radius: 3px;
+  font-size: 10pt;
+  font-weight: 600;
+  outline: none;
+}
+
+.addRecipeButton {
+  width: 250px;
+  height: 60px;
+  font-family: 'Source Sans Pro', sans-serif;
+  border: 3px solid black;
+  color: black;
+  border-radius: 8px;
+  font-size: 30pt;
+  font-weight: bold;
+  outline: none;
+  background: none;
+  margin-bottom: 275px;
+  margin-right: 30px;
+}
+
+.addRecipeWindow {
+  position: fixed;
+  height: 600px;
+  width: 95%;
+  margin: auto;
+  z-index: auto;
+  top: 30px;
+  left: 2.5%;
+  border: 3px solid darkslategrey;
+  border-radius: 10px;
+  background-color: white;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.addRecHead {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 30pt;
+  color: darkgrey;
+  margin-top: 10px;
+}
+
+.addStepContainer {
+  width: 99.7%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.addStepContainerWhole {
+  width: 95%;
+  height: 80%;
+  align-items: center;
+  overflow: auto;
+  border-top: 2px solid darkslategrey;
+  border-bottom: 2px solid darkslategrey;
+  margin-top: 10px;
+}
+
+.addIngredientText {
+  width: 75%;
+  outline: none;
+  font-size: 14pt;
+  height: 95%;
+  resize: none;
+  border: 2px solid darkslategrey;
+  border-radius: 5px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.addIngredient {
+  height: 98%;
+  width: 20%;
+  border: 2px darkslategrey solid;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 12pt;
+  font-family: 'Source Sans Pro', sans-serif;
+  outline: none;
+  overflow: scroll;;
+}
+
+.singleIngredient {
+  width: 100%;
+  height: 25px;
+  border-bottom: 1px solid black;
+}
+
+.buttonDiv {
+  height: 40px;
+  width: 99.7%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nextStepButton {
+  width: 150px;
+  height: 35px;
+  border: 2px solid darkslategrey;
+  background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15pt;
+  border-radius: 5px;
+  text-align: center;
+  outline: none;
+}
+
+.newIngredientButton {
+  width: 100px;
+  height: 35px;
+  border: 2px solid darkslategrey;
+  background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 8pt;
+  border-radius: 5px;
+  text-align: center;
+  outline: none;
+}
+
+.createNewRecipeButton {
+  width: 100px;
+  height: 35px;
+  border: 2px solid darkslategrey;
+  background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16pt;
+  border-radius: 5px;
+  outline: none;
+  margin-top: 8px;
+}
+
+.ingredientWindow {
+  position: fixed;
+  height: 300px;
+  width: 60%;
+  margin: auto;
+  z-index: auto;
+  top: 150px;
+  left: 20%;
+  background: white;
+  border: 2px solid darkslategrey;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.ingredientName {
+  width: 70%;
+  height: 40px;
+  border: 2px solid darkslategrey;
+  background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 14pt;
+  border-radius: 5px;
+  outline: none;
+}
+
+select {
+  width: 150px;
+  height: 40px;
+  border: 2px solid darkslategrey;
+  background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 18pt;
+  border-radius: 5px;
+}
+
+.addIngredientButton {
+  width: 100px;
+  height: 35px;
+  border: 2px solid darkslategrey;
+  background: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 16pt;
+  border-radius: 5px;
+  outline: none;
+  margin-top: 8px;
+}
