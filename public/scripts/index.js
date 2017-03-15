@@ -1,6 +1,6 @@
 $(document).ready(() => {
 
-  //Click on Rec from homepage to create a Rec page.
+  //Click on Rec Card from homepage to create a Rec page.
   $(document).on('click', '.mainRec', function(event) {
     $('body').css("visibility", "hidden");
     $(this).addClass('recPageHero')
@@ -14,14 +14,19 @@ $(document).ready(() => {
     generateSingleRecipe(this)
   })
 
+  //Click on 'New Recipe' to activate Create Recipe Window
   $(document).on('click', '.addRecipeButton', function() {
     $('.hero, .container').fadeTo(200, .5, () => {
     })
-    $('body').append($('<div>', {class: 'addRecipeWindow test'}))
-    $('.addRecipeWindow').append($('<h1>', {class: 'addRecHead'}).text('New Recipe'))
-    $('.addRecipeWindow').append($('<div>', {class: 'addStepContainerWhole'}))
+    $('body').append($('<div>', {class: 'addRecipeWindow'}))
+    $('.addRecipeWindow').append($('<div>', {class: 'addRecImg'}))
+    $('.addRecipeWindow').append($('<div>', {class: 'addRecipeWindow2'}))
+    $('.addRecipeWindow2').append($('<h1>', {class: 'addRecHead'}).text('New Recipe'))
+    $('.addRecipeWindow2').append($('<div>', {class: 'addStepContainerWhole'}))
     createNewAddStep(1)
-    $('.addRecipeWindow').append($('<button>', {class: 'createNewRecipeButton'}).text('DONE'))
+    $('.addRecipeWindow2').append($('<div>', {class: 'buttonDiv2'}))
+    $('.buttonDiv2').append($('<button>', {class: 'createNewRecipeButton'}).text('BACK'))
+    $('.buttonDiv2').append($('<button>', {class: 'createNewRecipeButton'}).text('DONE'))
   })
 
   $(document).on('click', '.nextStepButton', function() {
@@ -33,22 +38,26 @@ $(document).ready(() => {
   $(document).on('click', '.newIngredientButton', function() {
     $('.addRecipeWindow').fadeTo(200, .5, () => {
       $('body').append($('<div>', {class: 'ingredientWindow'}))
-      $('.ingredientWindow').append($('<h1>', {class: 'addRecHead'}).text('New Ingredient'))
-      $('.ingredientWindow').append($('<div>', {class: 'optionsDiv'}))
-      $('.ingredientWindow').append($('<input>', {class: 'ingredientName'}))
+      $('.ingredientWindow').append($('<div>', {class: 'ingredientWindow2'}))
+      $('.ingredientWindow').append($('<div>', {class: 'ingredientImg'}))
+      $('.ingredientWindow2').append($('<h1>', {class: 'addRecHead'}).text('New Ingredient'))
+      $('.ingredientWindow2').append($('<div>', {class: 'optionsDiv'}))
+      $('.ingredientWindow2').append($('<input>', {class: 'ingredientName'}))
       $('.optionsDiv').append($('<select>', {class: 'amountSelect'}))
       $('.optionsDiv').append($('<select>', {class: 'measureSelect'}))
-      $('.ingredientWindow').append($('<button>', {class: 'addIngredientButton'}).text('ADD'))
+      $('.ingredientWindow2').append($('<div>', {class: 'buttonDiv2'}))
+      $('.buttonDiv2').append($('<button>', {class: 'addIngredientButton2'}).text('BACK'))
+      $('.buttonDiv2').append($('<button>', {class: 'addIngredientButton'}).text('ADD'))
       populateSelects()
     })
   })
 
   $(document).on('click', '.addIngredientButton', function() {
     var ingString = $('.amountSelect').val() + ' ' + $('.measureSelect').val() + ' ' + $('.ingredientName').val()
-    $('.addIngredientText').append(ingString)
+    $('.addIngredientText').last().append(ingString)
     $('.ingredientWindow').remove()
     $('.addRecipeWindow').fadeTo(200, 1, () => {
-      console.log('bonk');
+
     })
   })
 
@@ -62,24 +71,25 @@ $(document).ready(() => {
     $('body').empty()
     $('body').append(element)
     $('body').css("visibility", "visible");
-    $('body').append($('<div>', {class: 'test lower'}))
-    $('.lower').append($('<div>', {class: 'test container centerItems'}))
-    $('.lower').append($('<div>', {class: 'test container centerTop'}))
-    $('.container').first().append($('<div>', {class: 'test recipeSteps'}))
-    $('.container').last().append($('<div>', {class: 'test reviewBox'}))
+    $('body').append($('<div>', {class: 'lower'}))
+    $('.lower').append($('<div>', {class: 'container centerItems'}))
+    $('.lower').append($('<div>', {class: 'container centerTop'}))
+    $('.container').first().append($('<div>', {class: 'recipeSteps'}))
+    $('.container').last().append($('<div>', {class: 'reviewBox'}))
     generateRecipeSteps()
     generateReviews()
   }
 
   function generateRecipeSteps() {
     for (i=0; i<10; i++) {
-      $('.recipeSteps').append($('<div>', {class: 'step test'}).text(i+':'))
+      $('.recipeSteps').append($('<div>', {class: 'step', id: 'step' + i}))
+      $('#step' + i).append($('<h4>', {class: 'stepHead'}).text('Step ' + i))
     }
   }
 
   function generateReviews() {
     for (i=0; i<5; i++) {
-      $('.reviewBox').append($('<div>', {class: 'test review'}).text('bonk'))
+      $('.reviewBox').append($('<div>', {class: 'review'}).text('Review'+i))
     }
     $('.container').last().append($('<button>', {class: 'addReviewButton'}).text('ADD REVIEW'))
   }
@@ -88,6 +98,9 @@ $(document).ready(() => {
     $('body').append($('<div>', {class: 'hero'}))
     $('.hero').append($('<div>', {class: 'label'}))
     $('label').append($('<button>', {class: 'addRecipeButton'}))
+    $('body').append($('<div>', {class: 'lower'}))
+    $('.lower').append($('<div>', {class: 'container'}))
+    $('.lower').append($('<div>', {class: 'container'}))
   }
 
   function createNewAddStep(step) {
