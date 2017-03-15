@@ -2,16 +2,24 @@ $(document).ready(() => {
 
   //Click on Rec Card from homepage to create a Rec page.
   $(document).on('click', '.mainRec', function(event) {
-    $('body').css("visibility", "hidden");
-    $(this).addClass('recPageHero')
-    $(this).removeClass('mainRec')
-    $(this).removeClass('mainRecHead')
-    $(this).removeClass('mainRecDesc')
-    $(this).removeClass('mainRecRating')
-    $('h2').addClass('recPageHead')
-    $('h3').addClass('recPageRating')
-    $('h4').addClass('recPageDesc')
-    generateSingleRecipe(this)
+    var id = parseInt($(this).attr('id').slice(3))
+    console.log(id);
+    $('.hero, .mainRec').not(this).fadeTo(500, .1 , () => {
+      console.log($(this).parent().is('#cont1'));
+      if ($(this).parent().is('#cont1')) {
+        $(this).addClass('move')
+      } else {
+        $(this).addClass('move2')
+      }
+      $('.mainRecInfo').css('width', '40%')
+    })
+    $('#info'+id).append($('<div>', {class: 'recipeSteps'}))
+    $(this).append($('<div>', {class: 'singleRecipe'}))
+    generateRecipeSteps()
+    $('.singleRecipe').append($('<div>', {class: 'showRecipe'}))
+    $('.singleRecipe').append($('<button>', {class: 'singleRecBackButton'}).text('BACK'))
+    $('.singleRecipe').append($('<button>', {class: 'reviewButton'}).text('Reveiws >>'))
+    $('.mainRec').click(false)
   })
 
   //Click on 'New Recipe' to activate Create Recipe Window
@@ -65,6 +73,11 @@ $(document).ready(() => {
     })
   })
 
+  $(document).on('click', '.singleRecBackButton', function() {
+    console.log('ping');
+    location.reload()
+  })
+
   function generateIngredientWindow(ing) {
     $('.addRecipeWindow').fadeTo(200, .5, () => {
       $('body').append($('<div>', {class: 'ingredientWindow'}))
@@ -82,21 +95,6 @@ $(document).ready(() => {
     })
   }
 
-
-
-  function generateSingleRecipe(element) {
-    $('body').empty()
-    $('body').append(element)
-    $('body').css("visibility", "visible");
-    $('body').append($('<div>', {class: 'lower'}))
-    $('.lower').append($('<div>', {class: 'container centerItems'}))
-    $('.lower').append($('<div>', {class: 'container centerTop'}))
-    $('.container').first().append($('<div>', {class: 'recipeSteps'}))
-    $('.container').last().append($('<div>', {class: 'reviewBox'}))
-    generateRecipeSteps()
-    generateReviews()
-  }
-
   function generateRecipeSteps() {
     for (i=0; i<10; i++) {
       $('.recipeSteps').append($('<div>', {class: 'step', id: 'step' + i}))
@@ -111,14 +109,14 @@ $(document).ready(() => {
     $('.container').last().append($('<button>', {class: 'addReviewButton'}).text('ADD REVIEW'))
   }
 
-  function createHome () {
-    $('body').append($('<div>', {class: 'hero'}))
-    $('.hero').append($('<div>', {class: 'label'}))
-    $('label').append($('<button>', {class: 'addRecipeButton'}))
-    $('body').append($('<div>', {class: 'lower'}))
-    $('.lower').append($('<div>', {class: 'container'}))
-    $('.lower').append($('<div>', {class: 'container'}))
-  }
+  // function createHome () {
+  //   $('body').append($('<div>', {class: 'hero'}))
+  //   $('.hero').append($('<div>', {class: 'label'}))
+  //   $('label').append($('<button>', {class: 'addRecipeButton'}))
+  //   $('body').append($('<div>', {class: 'lower'}))
+  //   $('.lower').append($('<div>', {class: 'container', id: 'cont1'}))
+  //   $('.lower').append($('<div>', {class: 'container', id: 'cont2'}))
+  // }
 
   function createNewAddStep(step) {
     $('.addStepContainerWhole').append($('<div>', {class: 'addStepContainer', id: step}))
@@ -146,4 +144,10 @@ $(document).ready(() => {
       $('.amountSelect').append($('<option>').text(amount[i]))
     }
   }
+
+  function attachRecipeToSingleWindow(element) {
+    $(element).append($('<div>', {class: 'singleRecipe'}))
+    $('.singleRecipe').append($('<button>', {class: 'singleRecBackButton'}))
+  }
+
 })
