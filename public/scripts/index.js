@@ -1,26 +1,48 @@
 $(document).ready(() => {
 
+  getRecipes()
+
   //Click on Rec Card from homepage to create a Rec page.
-  $(document).on('click', '.mainRec', function(event) {
+  $(document).on('click', '.dummy', function(event) {
     var id = parseInt($(this).attr('id').slice(3))
-    console.log(id);
+    $('.hero').addClass('heroShrink')
+    $('.container').css('height', '600px')
+
     $('.hero, .mainRec').not(this).fadeTo(500, .1 , () => {
-      console.log($(this).parent().is('#cont1'));
+
       if ($(this).parent().is('#cont1')) {
         $(this).addClass('move')
       } else {
         $(this).addClass('move2')
       }
-      $('.mainRecInfo').css('width', '40%')
+      $(this).removeClass('dummy')
     })
-    $('#info'+id).append($('<div>', {class: 'recipeSteps'}))
-    $(this).append($('<div>', {class: 'singleRecipe'}))
-    generateRecipeSteps()
-    $('.singleRecipe').append($('<div>', {class: 'showRecipe'}))
-    $('.singleRecipe').append($('<button>', {class: 'singleRecBackButton'}).text('BACK'))
-    $('.singleRecipe').append($('<button>', {class: 'reviewButton'}).text('Reveiws >>'))
-    $('.mainRec').click(false)
+    setTimeout(() => {
+      $.get('https://grecipes-back-end.herokuapp.com/reviews/'+id, (data) => {
+        $('.singleRecipe').append($('<button>', {class: 'reviewButton'}).text('Reveiws >> '+data.length)).hide().fadeIn(800)
+        $('.reviewButton').addClass('click')
+        $(document).on('click', '.reviewButton', function() {
+          createReviewPage(data, id)
+        })
+      })
+      $(this).append($('<div>', {class: 'singleRecipe'}))
+      $('#info'+id).append($('<div>', {class: 'recipeSteps'}))
+      generateRecipeSteps(id)
+      $('.singleRecipe').append($('<div>', {class: 'showRecipe'}))
+      $('#head'+id).addClass('headerMove')
+      $('.showRecipe').append($('<h1>', {class: 'showRecipeHead'}).text('Ingredients')).hide().fadeIn(800)
+      $('.singleRecipe').append($('<button>', {class: 'singleRecDeleteButton', id: 'recDelete'}).text('DELETE')).hide().fadeIn(800)
+      $('.singleRecipe').append($('<button>', {class: 'singleRecBackButton'}).text('BACK')).hide().fadeIn(800)
+      $('.mainRec').addClass('noClick')
+      $('.singleRecBackButton').addClass('click')
+      generateSingleRecipe(id)
+    },
+    1200)
   })
+
+
+
+
 
   //Click on 'New Recipe' to activate Create Recipe Window
   $(document).on('click', '.addRecipeButton', function() {
@@ -28,7 +50,7 @@ $(document).ready(() => {
     })
     $('body').append($('<div>', {class: 'addRecipeWindow'}))
     $('.addRecipeWindow').append($('<div>', {class: 'addRecImg'}))
-    $('.addRecipeWindow').append($('<div>', {class: 'addRecipeWindow2'}))
+    $('.addRecipeWindow').append($('<div>', {class: 'addRecipeWindow2'})).hide().fadeIn(500)
     $('.addRecipeWindow2').append($('<h1>', {class: 'addRecHead'}).text('New Recipe'))
     $('.addRecipeWindow2').append($('<div>', {class: 'addStepContainerWhole'}))
     createNewAddStep(1)
@@ -62,9 +84,24 @@ $(document).ready(() => {
 
 
   $(document).on('click', '#addBack', function() {
-    $('.addRecipeWindow').remove()
+    $('.addRecipeWindow').fadeOut(500)
     $('.hero, .container').fadeTo(500, 1, () => {
     })
+    setTimeout(() => {
+      $('.addRecipeWindow').remove()
+    },500)
+  })
+
+  $(document).on('click', '.reviewBackButton', function() {
+    var id = $(this).attr('id')
+    console.log(id);
+    $('.reviewWindow').fadeOut()
+    $('#rec'+id+' > *').fadeTo(500, 1, () => {
+      console.log('yippee');
+    })
+    setTimeout(() => {
+      $('.reviewWindow').remove()
+    },500)
   })
 
   $(document).on('click', '#ingBack', function() {
@@ -74,8 +111,9 @@ $(document).ready(() => {
   })
 
   $(document).on('click', '.singleRecBackButton', function() {
-    console.log('ping');
+
     location.reload()
+    // decolapseMainRec()
   })
 
   function generateIngredientWindow(ing) {
@@ -95,28 +133,54 @@ $(document).ready(() => {
     })
   }
 
-  function generateRecipeSteps() {
-    for (i=0; i<10; i++) {
-      $('.recipeSteps').append($('<div>', {class: 'step', id: 'step' + i}))
-      $('#step' + i).append($('<h4>', {class: 'stepHead'}).text('Step ' + i))
-    }
+  function generateRecipeSteps(rec) {
+    $.get('https://grecipes-back-end.herokuapp.com/steps/'+rec, (data) => {
+      data.forEach((e) => {
+        $('.recipeSteps').append($('<div>', {class: 'step', id: 'step' + e.stepOrder})).hide().fadeIn(800)
+        $('#step' + e.stepOrder).append($('<h4>', {class: 'stepHead'}).text('Step ' + e.stepOrder)).hide().fadeIn(800)
+        $('#step' + e.stepOrder).append($('<p>', {class: 'stepBody'}).text(e.body)).hide().fadeIn(800)
+      })
+    })
   }
 
-  function generateReviews() {
-    for (i=0; i<5; i++) {
-      $('.reviewBox').append($('<div>', {class: 'review'}).text('Review'+i))
-    }
-    $('.container').last().append($('<button>', {class: 'addReviewButton'}).text('ADD REVIEW'))
+  function generateReviews(id) {
+    $.get('https://grecipes-back-end.herokuapp.com/reviews/'+id, (data) => {
+      data.forEach((e) => {
+        $('.reviewContainer').append($('<div>', {class: 'reviewHeader'}).text(e.name)).hide().fadeIn(300)
+        $('.reviewContainer').append($('<p>', {class: 'review'}).text(e.body)).hide().fadeIn(300)
+      })
+      $('.newReviewForm').append($('<input>', {class: 'reviewInput click', placeholder: 'User'})).hide().fadeIn(300)
+      $('.newReviewForm').append($('<textarea>', {class: 'reviewBody click', placeholder: 'Review'})).hide().fadeIn(300)
+      $('.newReviewForm').append($('<div>', {class: 'buttonDiv'}))
+      $('.buttonDiv').append($('<button>', {class: 'reviewBackButton click', id: id}).text('BACK')).hide().fadeIn(300)
+      $('.buttonDiv').append($('<button>', {class: 'addReviewButton'}).text('ADD REVIEW')).hide().fadeIn(300)
+    })
   }
 
-  // function createHome () {
-  //   $('body').append($('<div>', {class: 'hero'}))
-  //   $('.hero').append($('<div>', {class: 'label'}))
-  //   $('label').append($('<button>', {class: 'addRecipeButton'}))
-  //   $('body').append($('<div>', {class: 'lower'}))
-  //   $('.lower').append($('<div>', {class: 'container', id: 'cont1'}))
-  //   $('.lower').append($('<div>', {class: 'container', id: 'cont2'}))
-  // }
+  function createHome (data) {
+    var counter = 1
+    $('body').append($('<div>', {class: 'hero'}))
+    $('.hero').append($('<div>', {class: 'label'}))
+    $('.hero').append($('<button>', {class: 'addRecipeButton'}).text('NEW RECIPE'))
+    $('body').append($('<div>', {class: 'lower'}))
+    $('.lower').append($('<div>', {class: 'container', id: 'cont1'}))
+    $('.lower').append($('<div>', {class: 'container', id: 'cont2'}))
+    data.forEach((e) => {
+      if ($('.mainRec').length < 3) {
+        $('#cont1').append($('<div>', {class: 'mainRec', id: 'rec'+counter}))
+      } else {
+        $('#cont2').append($('<div>', {class: 'mainRec', id: 'rec'+counter}))
+      }
+      $('.mainRec').addClass('dummy')
+      $('.mainRec').last().append($('<div>', {class: 'mainImg'}))
+      $('.mainImg').last().append($('<img>', {src: e.imgURL, alt: 'img'}))
+      $('.mainRec').last().append($('<div>', {class: 'mainRecInfo', id: 'info'+counter}))
+      $('.mainRecInfo').last().append($('<h2>', {class: 'mainRecHead', id: 'head'+ counter}).text(e.title))
+      $('.mainRecInfo').last().append($('<h3>', {class: 'mainRecRating'}).text('User Rating: '+e.rating))
+      $('.mainRecInfo').last().append($('<h4>', {class: 'mainRecDesc'}).text(e.description))
+      counter++
+    })
+  }
 
   function createNewAddStep(step) {
     $('.addStepContainerWhole').append($('<div>', {class: 'addStepContainer', id: step}))
@@ -145,9 +209,53 @@ $(document).ready(() => {
     }
   }
 
+  function createRecipe(data) {
+    data.forEach((e) => {
+      $('.showRecipe').append($('<p>', {class: 'ingredient'}).hide().fadeIn(800).text(e.quantity+' '+e.units+' '+e.name))
+    })
+  }
+
   function attachRecipeToSingleWindow(element) {
     $(element).append($('<div>', {class: 'singleRecipe'}))
     $('.singleRecipe').append($('<button>', {class: 'singleRecBackButton'}))
   }
 
+  function getRecipes() {
+    $.get('https://grecipes-back-end.herokuapp.com/recipes', (data) => {
+      createHome(data)
+    })
+  }
+
+  function generateSingleRecipe(id) {
+    $.get('https://grecipes-back-end.herokuapp.com/ingredients/'+id, (data) => {
+      createRecipe(data)
+    })
+  }
+
+  function decolapseMainRec() {
+    var $this = $(event.target).parents('.mainRec');
+    var id = parseInt($this.attr('id').slice(3))
+    var $head = $('#head'+id)
+    $('.singleRecipe').slideLeft(1000, function() {
+      $('.singleRecipe').remove();
+      $this.addClass('collapse', ()=> {
+        $this.removeClass('collapse')
+      })
+      $head.addClass('headershrink')
+    });
+  }
+
+  function createReviewPage(data, id) {
+    $('#rec'+id+' > *').fadeTo(500, .1 , () => {
+
+    })
+    $('#rec'+id).append($('<div>', {class: 'reviewWindow'})).hide().fadeIn(300)
+    $('.reviewWindow').append($('<div>', {class: 'reviewContainerPre'})).hide().fadeIn(300)
+    $('.reviewWindow').append($('<div>', {class: 'reviewContainerPost'})).hide().fadeIn(300)
+    $('.reviewContainerPost').append($('<div>', {class: 'reviewImg'})).hide().fadeIn(300)
+    $('.reviewContainerPost').append($('<div>', {class: 'reviewContainer'})).hide().fadeIn(300)
+    $('.reviewContainerPost').append($('<div>', {class: 'newReviewForm'})).hide().fadeIn(300)
+    $('.reviewContainerPre').append($('<div>', {class: 'reviewWindowHead'}).text('Reviews')).hide().fadeIn(300)
+    generateReviews(id)
+  }
 })

@@ -38,10 +38,14 @@
   height: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
-
+.headerMove {
+  animation: headermove;
+  animation-fill-mode: forwards;
+  animation-duration: 1.5s;
+}
 
 .mainRec {
   width: 100%;
@@ -52,6 +56,7 @@
   display: flex;
   flex-direction: row;
   z-index: 1;
+  margin-top: 10px;
 }
 
 .mainRecHead {
@@ -69,16 +74,17 @@
   padding-left: 30px;
   padding-right: 30px;
   box-shadow: 4px 4px 5px #888888;
-  margin-bottom: 10px;
 }
 
 .mainRecDesc {
   font-size: 10pt;
-  height: 15%;
+  height: auto;
+  margin-bottom: 4px;
 }
 
 .mainRecRating {
-margin-bottom: 10px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 }
 
 .recPageHero {
@@ -88,13 +94,18 @@ margin-bottom: 10px;
 }
 
 .mainImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   margin-right: 10px;
-  background-image: url('http://placehold.it/200x120');
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
+  overflow: hidden;
   width: 30%;
+}
+
+.mainImg img {
+  flex-shrink: 0;
+  min-height: 100%;
 }
 
 .mainRecInfo {
@@ -103,7 +114,7 @@ margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .recPageHead {
@@ -144,6 +155,7 @@ margin-bottom: 10px;
   width: 90%;
   height: 65%;
   overflow: auto;
+  margin-top: 5%;
 }
 
 .reviewBox {
@@ -155,11 +167,19 @@ margin-bottom: 10px;
 
 .step {
   width: 99.5%;
-  height: 90px;
+  height: auto;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 10pt;
   margin-bottom: 9px;
   /*box-shadow: 2px 2px 2px #888888;*/
+}
+
+.stepBody {
+  margin-left: 7px;
+  font-size: 14pt;
+  margin-top: 5px;
+  height: auto;
+  margin-bottom: 4px;
 }
 
 .stepHead {
@@ -176,25 +196,129 @@ margin-bottom: 10px;
   box-shadow: 2px 2px 2px #888888;
 }
 
+.reviewWindow {
+  position: fixed;
+  z-index: auto;
+  width: 65%;
+  height: 38%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 10%;
+  margin-left: 15%;
+}
+
+.reviewContainer {
+  width: 38%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewContainerPre {
+  width: 100%;
+  height: auto;
+}
+
+.reviewImg {
+  height: 100%;
+  width: 20%;
+  background-image: url('../images/review.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.reviewContainerPost {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+.reviewInput {
+  height: 10%;
+  width: 90%;
+  border: 1px solid darkslategrey;
+  outline: none;
+}
+
+.reviewBody {
+  height: 50%;
+  width: 90%;
+  border: 1px solid darkslategrey;
+  outline: none;
+  resize: none;
+}
+
+.newReviewForm {
+  width: 38%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
 .review {
   width: 99.5%;
-  height: 100px;
+  height: auto;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 10pt;
-  margin-bottom: 4px;
-  border-bottom: 2px solid darkslategrey;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.reviewWindowHead {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 30pt;
+  color: darkgrey;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #73e600;
+  background: -webkit-linear-gradient(left, #73e600 , white);
+  background: -o-linear-gradient(right, #73e600, white); /
+  background: -moz-linear-gradient(right, #73e600, white);
+  background: linear-gradient(to right, #73e600 , white);
+  color: white;
+  width: 100%;
+  padding-left: 10px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+.reviewHeader {
+  width: 100%;
+  height: 10px;
+  color: white;
+  background: -webkit-linear-gradient(left, #73e600 , white);
+  background: -o-linear-gradient(right, #73e600, white); /
+  background: -moz-linear-gradient(right, #73e600, white);
+  background: linear-gradient(to right, #73e600 , white);
+  padding-top: 3px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  box-shadow: 2px 2px 2px #888888;
 }
 
 .addReviewButton {
-  width: 150px;
-  height: 30px;
+  width: 90px;
+  height: 25px;
+  background: #e6d1cc;
   font-family: 'Source Sans Pro', sans-serif;
-  border: 3px solid brown;
-  color: brown;
-  border-radius: 3px;
   font-size: 10pt;
-  font-weight: 600;
+  border-radius: 5px;
+  text-align: center;
   outline: none;
+  color: white;
+  border: none;
 }
 
 .addRecipeButton {
@@ -213,12 +337,16 @@ margin-bottom: 10px;
 }
 
 .singleRecipe {
-  width: 30%;
+  width: 29%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;;
+  justify-content: center;
   align-items: center;
+  animation: moveSingle;
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+  padding-top: 25px;
 }
 
 .singleRecBackButton {
@@ -232,13 +360,52 @@ margin-bottom: 10px;
   outline: none;
   color: white;
   border: none;
+  margin-bottom: 8px;
+}
+
+#recDelete {
+  width: 150px;
+  height: 35px;
+  background: #e6d1cc;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 15pt;
+  border-radius: 5px;
+  text-align: center;
+  outline: none;
+  color: white;
+  border: none;
+  margin-bottom: 8px;
+  margin-bottom: 15%;
+  background: red;
+}
+
+.reviewBackButton {
+  width: 90px;
+  height: 25px;
+  background: #e6d1cc;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 10pt;
+  border-radius: 5px;
+  text-align: center;
+  outline: none;
+  color: white;
+  border: none;
 }
 
 .showRecipe {
   width: 95%;
-  height: 70%;
-  border-bottom: 3px solid darkslategrey
+  height: auto;
+  /*border-bottom: 3px solid #e6d1cc;*/
   margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.showRecipeHead {
+  margin-bottom: 15px;
+  font-size: 22pt;
 }
 
 .reviewButton {
@@ -268,6 +435,9 @@ margin-bottom: 10px;
   opacity: 1;
   display: flex;
   flex-direction: row;
+  animation: addCreate;
+  animation-duration: .8s;
+  animation-fill-mode: forwards;
 }
 
 .addRecipeWindow2 {
@@ -308,7 +478,7 @@ margin-bottom: 10px;
 
 .addStepContainerWhole {
   width: 95%;
-  height: 85%;
+  height: 80%;
   align-items: center;
   overflow: auto;
   margin-top: 10px;
@@ -316,27 +486,42 @@ margin-bottom: 10px;
 }
 
 .addIngredientText {
-  width: 75%;
+  width: 70%;
   outline: none;
   font-size: 14pt;
   height: 91%;
   resize: none;
-  border: 2px solid darkslategrey;
   border-radius: 5px;
   font-family: 'Source Sans Pro', sans-serif;
+  box-shadow: 3px 3px 3px #888888;
+  border: none;
 }
 
 .addIngredient {
   height: 93%;
   width: 23%;
-  border: 2px darkslategrey solid;
+  border: none;
   border-radius: 5px;
   background-color: white;
   font-size: 12pt;
   font-family: 'Source Sans Pro', sans-serif;
   outline: none;
-  overflow: scroll;;
+  overflow: scroll;
+  box-shadow: 3px 3px 3px #888888;
 }
+/*
+.addIngredientHeader {
+  width: 10%;
+  height: 4%;
+  background: -webkit-linear-gradient(left, #73e600 , white);
+  background: -o-linear-gradient(right, #73e600, white); /
+  background: -moz-linear-gradient(right, #73e600, white);
+  background: linear-gradient(to right, #73e600 , white);
+  box-shadow: 3px 3px 3px #888888;
+  z-index: auto;
+  position: relative;
+  top: 16%;
+}*/
 
 .addRecImg {
   height: 600px;
@@ -354,6 +539,16 @@ margin-bottom: 10px;
   padding-top: 5px;
 }
 
+.ingredient {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  font-size: 15pt;
+  font-weight: bold;
+  margin-bottom: 5px;
+
+}
+
 .buttonDiv {
   height: 40px;
   width: 99.7%;
@@ -361,6 +556,7 @@ margin-bottom: 10px;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 4px;
 }
 
 .buttonDiv2 {
@@ -379,6 +575,7 @@ margin-bottom: 10px;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  margin-top: 30px;
 }
 
 .nextStepButton {
@@ -434,6 +631,9 @@ margin-bottom: 10px;
   flex-direction: row;
   box-shadow: 4px 4px 5px #888888;
   justify-content: space-between;
+  animation: addCreate;
+  animation-duration: .8s;
+  animation-fill-mode: forwards;
 }
 
 .ingredientWindow2 {
@@ -504,6 +704,17 @@ select {
   color: white;
 }
 
+.noClick {
+  pointer-events: none;
+}
+
+.click {
+  pointer-events: auto;
+}
+
+.dummy {
+
+}
 .singleIngredient:hover {
   background-color: #e6ffcc
 }
@@ -511,25 +722,80 @@ select {
 .move {
   z-index: auto;
   animation: recMovement;
-  animation-duration: 1s;
+  animation-duration: 1.4s;
   animation-fill-mode: forwards;
 }
 
 .move2 {
   z-index: auto;
   animation: recMovement2;
+  animation-duration: 1.4s;
+  animation-fill-mode: forwards;
+}
+
+.collapse {
+  animation: recCollapse;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.headershrink {
+  animation: headerCollapse;
   animation-duration: 1s;
   animation-fill-mode: forwards;
 }
 
 @keyframes recMovement {
-  0% {width: 521.55px;}
-  50% {width: 212%; height: 120px; opacity: 1;}
-  100% {width: 212%; height: 1600%; opacity: 1;}
+  0% {width: 100%; height: 120px; }
+  35% {width: 212%; height: 120px; opacity: 1;}
+  100% {width: 212%; height: 600%; opacity: 1;}
 }
 
 @keyframes recMovement2 {
-  0% {width: 521.55px; position: relative; right: 0px;}
-  50% {width: 212%; position: relative; right: 110%; height: 120px;}
-  100% {width: 212%; position: relative; right: 110%; height: 1600%;}
+  0% {width: 100%; position: relative; right: 0px; height: 120px;}
+  35% {width: 212%; position: relative; right: 110%; height: 120px;}
+  100% {width: 212%; position: relative; right: 110%; height: 600%;}
+}
+
+.heroShrink {
+  animation: heroShrink;
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes heroShrink {
+  0% {height: 300px;}
+  50% {height: 300px;}
+  100% {height: 100px;}
+}
+
+@keyframes moveSingle {
+  0% {width: 0%}
+  100% {width: 29%}
+}
+
+@keyframes headermove {
+  0% {margin-left: -30px; padding-left: 30px; padding-right: 30px;}
+  100% {margin-left: -50px; padding-left: 70px; padding-right: 520px;}
+}
+
+@keyframes headerCollapse {
+  0% {margin-left: -50px; padding-left: 70px; padding-right: 520px;}
+  100% {margin-left: -30px; padding-left: 30px; padding-right: 30px;}
+}
+
+@keyframes addCreate {
+  0% {width: 0%}
+  100% {width: 65%}
+}
+
+@keyframes recCollapse {
+  0% {width: 212%; height: 600%; opacity: 1;}
+  100% {width: 100%; height: 120px;}
+}
+
+@keyframes recCollapse2 {
+  0% {width: 100%; position: relative; right: 0px; height: 120px;}
+  35% {width: 212%; position: relative; right: 110%; height: 120px;}
+  100% {width: 212%; position: relative; right: 110%; height: 600%;}
 }
