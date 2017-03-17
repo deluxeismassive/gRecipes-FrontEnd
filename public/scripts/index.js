@@ -50,13 +50,19 @@ $(document).ready(() => {
     })
     $('body').append($('<div>', {class: 'addRecipeWindow'}))
     $('.addRecipeWindow').append($('<div>', {class: 'addRecImg'}))
+    $('.addRecipeWindow').append($('<div>', {class: 'recList'}).text('Ingredients List'))
     $('.addRecipeWindow').append($('<div>', {class: 'addRecipeWindow2'})).hide().fadeIn(500)
     $('.addRecipeWindow2').append($('<h1>', {class: 'addRecHead'}).text('New Recipe'))
     $('.addRecipeWindow2').append($('<div>', {class: 'addStepContainerWhole'}))
     createNewAddStep(1)
     $('.addRecipeWindow2').append($('<div>', {class: 'buttonDivAdd'}))
     $('.buttonDivAdd').append($('<button>', {class: 'createNewRecipeButton', id: 'addBack'}).text('BACK'))
-    $('.buttonDivAdd').append($('<button>', {class: 'createNewRecipeButton', id: 'addDone'}).text('DONE'))
+    $('.buttonDivAdd').append($('<button>', {class: 'createNewRecipeButton click', id: 'addDone'}).text('DONE'))
+    populateIngredients()
+  })
+
+  $(document).on('click', '.createNewRecipeButton', function() {
+    createNewRecipeAuthorTitleWindow()
   })
 
   $(document).on('click', '.nextStepButton', function() {
@@ -66,22 +72,52 @@ $(document).ready(() => {
   })
 
   $(document).on('click', '.newIngredientButton', function() {
-    generateIngredientWindow('')
+    generateIngredientWindow('', "./images/ing.jpg")
   })
 
   $(document).on('click', '.addIngredientButton', function() {
     var ingString = $('.amountSelect').val() + ' ' + $('.measureSelect').val() + ' ' + $('.ingredientName').val()
+    $('.recList').append($('<div>', {class: 'listing'}).text(ingString))
+    $('.listing').last().append($('<button>', {class: 'deleteListingButton'}).text('X'))
     $('.addIngredientText').last().append(ingString)
     $('.ingredientWindow').remove()
     $('.addRecipeWindow').fadeTo(200, 1, () => {
-
     })
   })
 
   $(document).on('dblclick', '.singleIngredient', function() {
-    generateIngredientWindow($(this).text())
+    $.get('https://grecipes-back-end.herokuapp.com/ingredients', (data) => {
+      var url = ''
+      for (i = 0; i < data.length; i++) {
+        if ($(this).text() === data[i].name) {
+          url = data[i].imgURL
+        }
+      }
+      generateIngredientWindow($(this).text(), url)
+    })
   })
 
+  $(document).on('click', '.recSubmit', function() {
+    var title = $('.recTitle').val()
+    var author = $('.recAuthor').val()
+    var imgURL = $('#recUrl').val()
+    var description = $('.recBody').val()
+    var user_id = '3'
+
+    $.post('https://grecipes-back-end.herokuapp.com/recipes', {title, author, user_id, description, imgURL})
+    .then(function(data) {
+      console.log(data);
+      var recipe_id = data[0].id
+      for (i=1; i < $('.addStepContainer').length; i++) {
+        var stepOrder = i
+        var body = $('#ta'+i).val()
+        $.post('https://grecipes-back-end.herokuapp.com/steps', {body, recipe_id, stepOrder})
+        .done(function(data) {
+          console.log(data);
+        })
+      }
+    })
+  })
 
   $(document).on('click', '#addBack', function() {
     $('.addRecipeWindow').fadeOut(500)
@@ -94,10 +130,8 @@ $(document).ready(() => {
 
   $(document).on('click', '.reviewBackButton', function() {
     var id = $(this).attr('id')
-    console.log(id);
     $('.reviewWindow').fadeOut()
     $('#rec'+id+' > *').fadeTo(500, 1, () => {
-      console.log('yippee');
     })
     setTimeout(() => {
       $('.reviewWindow').remove()
@@ -116,11 +150,12 @@ $(document).ready(() => {
     // decolapseMainRec()
   })
 
-  function generateIngredientWindow(ing) {
+  function generateIngredientWindow(ing, url) {
     $('.addRecipeWindow').fadeTo(200, .5, () => {
       $('body').append($('<div>', {class: 'ingredientWindow'}))
       $('.ingredientWindow').append($('<div>', {class: 'ingredientWindow2'}))
       $('.ingredientWindow').append($('<div>', {class: 'ingredientImg'}))
+      $('.ingredientImg').css({'background-image':'url('+url+')'})
       $('.ingredientWindow2').append($('<h1>', {class: 'addRecHead'}).text('New Ingredient'))
       $('.ingredientWindow2').append($('<div>', {class: 'optionsDiv'}))
       $('.ingredientWindow2').append($('<input>', {class: 'ingredientName'}).val(ing))
@@ -175,8 +210,8 @@ $(document).ready(() => {
       $('.mainRec').last().append($('<div>', {class: 'mainImg'}))
       $('.mainImg').last().append($('<img>', {src: e.imgURL, alt: 'img'}))
       $('.mainRec').last().append($('<div>', {class: 'mainRecInfo', id: 'info'+counter}))
-      $('.mainRecInfo').last().append($('<h2>', {class: 'mainRecHead', id: 'head'+ counter}).text(e.title))
-      $('.mainRecInfo').last().append($('<h3>', {class: 'mainRecRating'}).text('User Rating: '+e.rating))
+      $('.mainRecInfo').last().append($('<h2>', {class: 'mainRecHead', id: 'head'+ counter}).text(e.title + ' by ' + e.author))
+      $('.mainRecInfo').last().append($('<h3>', {class: 'mainRecRating'}).text('Average Rating: '+Math.trunc(e.avg)))
       $('.mainRecInfo').last().append($('<h4>', {class: 'mainRecDesc'}).text(e.description))
       counter++
     })
@@ -184,7 +219,7 @@ $(document).ready(() => {
 
   function createNewAddStep(step) {
     $('.addStepContainerWhole').append($('<div>', {class: 'addStepContainer', id: step}))
-    $('.addStepContainer').last().append($('<textarea>', {class: 'addIngredientText'}).text('Step '+step+' - '))
+    $('.addStepContainer').last().append($('<textarea>', {class: 'addIngredientText', id: 'ta'+step}).text('Step '+step+' - '))
     $('.addStepContainer').last().append($('<div>', {class: 'addIngredient'}))
     $('.addStepContainerWhole').append($('<div>', {class: 'buttonDiv'}))
     $('.buttonDiv').append($('<button>', {class: 'nextStepButton'}).text('NEXT STEP'))
@@ -193,9 +228,16 @@ $(document).ready(() => {
   }
 
   function populateIngredients() {
-    for (i=1; i<40; i++) {
-      $('.addIngredient').append($('<div>', {class: 'singleIngredient'}).text('Ingredient'+i))
-    }
+    $.get('https://grecipes-back-end.herokuapp.com/ingredients', (data) => {
+      var sorted = []
+      data.forEach((e) => {
+        sorted.push(e.name)
+      })
+      var final = sorted.sort()
+      final.forEach((e)=> {
+        $('.addIngredient').append($('<div>', {class: 'singleIngredient'}).text(e))
+      })
+    })
   }
 
   function populateSelects() {
@@ -221,7 +263,7 @@ $(document).ready(() => {
   }
 
   function getRecipes() {
-    $.get('https://grecipes-back-end.herokuapp.com/recipes', (data) => {
+    $.get('https://grecipes-back-end.herokuapp.com/ratingAverage', (data) => {
       createHome(data)
     })
   }
@@ -258,4 +300,22 @@ $(document).ready(() => {
     $('.reviewContainerPre').append($('<div>', {class: 'reviewWindowHead'}).text('Reviews')).hide().fadeIn(300)
     generateReviews(id)
   }
+
+  function createRatingBox(eClass) {
+
+  }
+
+  function createNewRecipeAuthorTitleWindow() {
+    $('.addRecipeWindow').append($('<div>', {class: 'titleAuthorWindow'}))
+    $('.titleAuthorWindow').append($('<div>', {class: 'titleAuthorWindowHead'}).text('Title and Description'))
+    $('.titleAuthorWindow').append($('<div>', {class: 'titleAuthorWindowBody'}))
+    $('.titleAuthorWindowBody').append($('<input>', {class: 'recTitle', placeholder: 'Title'}))
+    $('.titleAuthorWindowBody').append($('<input>', {class: 'recAuthor', placeholder: 'Author'}))
+    $('.titleAuthorWindowBody').append($('<input>', {class: 'recAuthor', placeholder: 'Image URL', id: 'recUrl'}))
+    $('.titleAuthorWindowBody').append($('<textarea>', {class: 'recBody', placeholder: 'Description'}))
+    $('.titleAuthorWindowBody').append($('<div>', {class: 'buttonDivAdd'}))
+    $('.buttonDivAdd').append($('<button>', {class: 'createRecBack'}).text('BACK'))
+    $('.buttonDivAdd').append($('<button>', {class: 'recSubmit'}).text('SUBMIT'))
+  }
+
 })
